@@ -1,0 +1,453 @@
+[
+    {
+        "id": "1b91a7a6e2b2f587",
+        "type": "tab",
+        "label": "Cambio de Imagen",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ad578c8955c2f4f5",
+        "type": "inject",
+        "z": "1b91a7a6e2b2f587",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 300,
+        "wires": [
+            [
+                "614c5fc77ca30404",
+                "078cd4cfe6a56861",
+                "ca11fc7aa483e51b"
+            ]
+        ]
+    },
+    {
+        "id": "8a46ae7a694ce6c4",
+        "type": "function",
+        "z": "1b91a7a6e2b2f587",
+        "name": "function 10",
+        "func": "var numeroAleatorio = msg.payload;\nvar numeroRedondeado = parseFloat(numeroAleatorio.toFixed(2));\nmsg.payload = numeroRedondeado;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 140,
+        "wires": [
+            [
+                "922f673757bdc17c",
+                "172460a8dc8e1e3e"
+            ]
+        ]
+    },
+    {
+        "id": "922f673757bdc17c",
+        "type": "join",
+        "z": "1b91a7a6e2b2f587",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "payload",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "3",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 730,
+        "y": 200,
+        "wires": [
+            [
+                "2ffa337c6f3935ff"
+            ]
+        ]
+    },
+    {
+        "id": "2ffa337c6f3935ff",
+        "type": "function",
+        "z": "1b91a7a6e2b2f587",
+        "name": "function 11",
+        "func": "var temp = msg.payload[0]; // Temperatura \nvar hum = msg.payload[1];  // Humedad\nvar uv = msg.payload[2];   // Nivel de UV\n\n// Asignar el estado del clima en función de los valores de temperatura, humedad y UV\nif (temp >= 0.00 && temp < 3.33 && hum >= 0.00 && hum < 3.33 && uv >= 0.00 && uv < 3.33) {\n    msg.clima = \"LLuvia\";\n} else if (temp >= 3.33 && temp < 6.66 && hum >= 3.33 && hum < 6.66 && uv >= 3.33 && uv < 6.66) {\n    msg.clima = \"nublado\";\n} else {\n    msg.clima = \"soleado\";\n}\n\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 200,
+        "wires": [
+            [
+                "e44ca3f62872b4bc",
+                "2e7b95c14498335c"
+            ]
+        ]
+    },
+    {
+        "id": "2e7b95c14498335c",
+        "type": "debug",
+        "z": "1b91a7a6e2b2f587",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "clima",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1200,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "e44ca3f62872b4bc",
+        "type": "switch",
+        "z": "1b91a7a6e2b2f587",
+        "name": "",
+        "property": "clima",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "soleado",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "nublado",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "LLuvia",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 1050,
+        "y": 200,
+        "wires": [
+            [
+                "538fea430da0f581",
+                "6e44fc6f0a35b87a"
+            ],
+            [
+                "538fea430da0f581",
+                "6e44fc6f0a35b87a"
+            ],
+            [
+                "538fea430da0f581",
+                "6e44fc6f0a35b87a"
+            ]
+        ]
+    },
+    {
+        "id": "538fea430da0f581",
+        "type": "ui_template",
+        "z": "1b91a7a6e2b2f587",
+        "group": "da3ecc7419713cbb",
+        "name": "clima",
+        "order": 1,
+        "width": 13,
+        "height": 5,
+        "format": "<div ng-if=\"msg.clima === 'soleado'\">\n<img src=\"https://cdn.pixabay.com/photo/2024/02/05/03/10/sun-8553511_1280.jpg\" alt=\"Soleado\" style=\"width: 320px; height: 245px;\">\n</div>\n<div ng-if=\"msg.clima === 'LLuvia'\">\n    <img src=\"https://cdn.pixabay.com/photo/2022/04/27/01/11/weather-7159425_1280.png\" alt=\"Lluvia\" style=\"width: 320px; height: 245px;\">\n</div>\n<div ng-if=\"msg.clima === 'nublado'\">\n    <img src=\"https://cdn.pixabay.com/photo/2022/03/28/22/48/cloudy-7098479_1280.png\" alt=\"Nublado\" style=\"width: 315px; height: 245px;\">\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": false,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "x": 1210,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "172460a8dc8e1e3e",
+        "type": "ui_gauge",
+        "z": "1b91a7a6e2b2f587",
+        "name": "",
+        "group": "e18efb5f2daf75c3",
+        "order": 2,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "Temperatura",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 10,
+        "colors": [
+            "#004db3",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 590,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "9463d85fae6ec06c",
+        "type": "ui_gauge",
+        "z": "1b91a7a6e2b2f587",
+        "name": "",
+        "group": "e18efb5f2daf75c3",
+        "order": 3,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "Humedad",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 10,
+        "colors": [
+            "#0085c7",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 580,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "77fcdc5d743d1b13",
+        "type": "ui_gauge",
+        "z": "1b91a7a6e2b2f587",
+        "name": "",
+        "group": "e18efb5f2daf75c3",
+        "order": 4,
+        "width": 5,
+        "height": 4,
+        "gtype": "gage",
+        "title": "UV",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 10,
+        "colors": [
+            "#3101ef",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 570,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "bcd16bfd19e6e406",
+        "type": "function",
+        "z": "1b91a7a6e2b2f587",
+        "name": "function 12",
+        "func": "var numeroAleatorio = msg.payload;\nvar numeroRedondeado = parseFloat(numeroAleatorio.toFixed(2));\nmsg.payload = numeroRedondeado;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 200,
+        "wires": [
+            [
+                "922f673757bdc17c",
+                "9463d85fae6ec06c"
+            ]
+        ]
+    },
+    {
+        "id": "9a5e58018754ce97",
+        "type": "function",
+        "z": "1b91a7a6e2b2f587",
+        "name": "function 13",
+        "func": "var numeroAleatorio = msg.payload;\nvar numeroRedondeado = parseFloat(numeroAleatorio.toFixed(2));\nmsg.payload = numeroRedondeado;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 260,
+        "wires": [
+            [
+                "922f673757bdc17c",
+                "77fcdc5d743d1b13"
+            ]
+        ]
+    },
+    {
+        "id": "e09cf6429440edf1",
+        "type": "ui_button",
+        "z": "1b91a7a6e2b2f587",
+        "name": "",
+        "group": "e18efb5f2daf75c3",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Actualizar",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "date",
+        "topic": "payload",
+        "topicType": "msg",
+        "x": 100,
+        "y": 100,
+        "wires": [
+            [
+                "614c5fc77ca30404",
+                "078cd4cfe6a56861",
+                "ca11fc7aa483e51b"
+            ]
+        ]
+    },
+    {
+        "id": "6e44fc6f0a35b87a",
+        "type": "ui_text",
+        "z": "1b91a7a6e2b2f587",
+        "group": "da3ecc7419713cbb",
+        "order": 2,
+        "width": 13,
+        "height": 1,
+        "name": "",
+        "label": "estado",
+        "format": "{{msg.clima}}",
+        "layout": "col-center",
+        "x": 1210,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "614c5fc77ca30404",
+        "type": "random",
+        "z": "1b91a7a6e2b2f587",
+        "name": "",
+        "low": 1,
+        "high": 10,
+        "inte": "false",
+        "property": "payload",
+        "x": 260,
+        "y": 140,
+        "wires": [
+            [
+                "8a46ae7a694ce6c4"
+            ]
+        ]
+    },
+    {
+        "id": "078cd4cfe6a56861",
+        "type": "random",
+        "z": "1b91a7a6e2b2f587",
+        "name": "",
+        "low": 1,
+        "high": 10,
+        "inte": "false",
+        "property": "payload",
+        "x": 260,
+        "y": 200,
+        "wires": [
+            [
+                "bcd16bfd19e6e406"
+            ]
+        ]
+    },
+    {
+        "id": "ca11fc7aa483e51b",
+        "type": "random",
+        "z": "1b91a7a6e2b2f587",
+        "name": "",
+        "low": 1,
+        "high": 10,
+        "inte": "false",
+        "property": "payload",
+        "x": 260,
+        "y": 260,
+        "wires": [
+            [
+                "9a5e58018754ce97"
+            ]
+        ]
+    },
+    {
+        "id": "272ee1e7b80bf72d",
+        "type": "ui_spacer",
+        "z": "1b91a7a6e2b2f587",
+        "name": "spacer",
+        "group": "e18efb5f2daf75c3",
+        "order": 1,
+        "width": 17,
+        "height": 1
+    },
+    {
+        "id": "be1a893ce8acb983",
+        "type": "ui_spacer",
+        "z": "1b91a7a6e2b2f587",
+        "name": "spacer",
+        "group": "e18efb5f2daf75c3",
+        "order": 5,
+        "width": 17,
+        "height": 1
+    },
+    {
+        "id": "da3ecc7419713cbb",
+        "type": "ui_group",
+        "name": "imagenes",
+        "tab": "4012179b5794d9f4",
+        "order": 1,
+        "disp": false,
+        "width": 13,
+        "collapse": false
+    },
+    {
+        "id": "e18efb5f2daf75c3",
+        "type": "ui_group",
+        "name": "Datos",
+        "tab": "4012179b5794d9f4",
+        "order": 2,
+        "disp": true,
+        "width": 17,
+        "collapse": false
+    },
+    {
+        "id": "4012179b5794d9f4",
+        "type": "ui_tab",
+        "name": "Clima2",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    }
+]
