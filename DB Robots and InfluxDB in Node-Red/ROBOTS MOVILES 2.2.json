@@ -1,0 +1,1603 @@
+[
+    {
+        "id": "2b323ae02a4fb001",
+        "type": "tab",
+        "label": "ROBOTS MEJOR",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "2acddaa493082815",
+        "type": "ui_text",
+        "z": "2b323ae02a4fb001",
+        "group": "b1c3cc6c64b47361",
+        "order": 1,
+        "width": 9,
+        "height": 1,
+        "name": "",
+        "label": "robots ingresados",
+        "format": "{{msg.payload[0].total}}",
+        "layout": "row-spread",
+        "x": 770,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "39ce5cea78dad353",
+        "type": "mysql",
+        "z": "2b323ae02a4fb001",
+        "mydb": "77eccf650e9e1b9d",
+        "name": "",
+        "x": 590,
+        "y": 160,
+        "wires": [
+            [
+                "6ed4b46d00e66b30",
+                "2acddaa493082815"
+            ]
+        ]
+    },
+    {
+        "id": "6ed4b46d00e66b30",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "contador",
+        "func": "// Obtener el resultado de la consulta SQL del mensaje\nvar totalRegistros = null; // Inicializar la variable para evitar errores\n\nif (msg.payload) {\n  if (Array.isArray(msg.payload) && msg.payload.length > 0) {\n    totalRegistros = msg.payload[0].total;\n  } else {\n    console.error(\"ingrese otro dato\");\n  }\n} else {\n  console.error(\"Error: No se ha recibido ningún mensaje.\");\n}\n\n// Verificar si el número de registros es menor que 4\nif (totalRegistros !== null && totalRegistros < 4) {\n  // Incrementar el contador si no se ha alcanzado el límite\n  context.counter = context.counter || 0;\n  if (context.counter < 4) {\n    context.counter++;\n    return msg; // Permitir el ingreso del robot\n  } else {\n    return null; // Detener el flujo si se alcanza el límite\n  }\n} else {\n  // Detener el flujo si ya hay 4 o más robots ingresados o si hay un error\n  return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 160,
+        "wires": [
+            [
+                "242a1e8f1542bede",
+                "22d6b0e02d17a003"
+            ]
+        ]
+    },
+    {
+        "id": "242a1e8f1542bede",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "ingresar robots",
+        "func": "// Verificar si se ha recibido algún mensaje del contador\nif (msg.payload) {\n    // Obtener los datos de nombre y referencia desde las variables globales\n    var nombre = global.get('nombre');\n    var referencia = global.get('ref');\n    \n    // Consulta SQL para insertar los datos en la tabla 'Metricas'\n    var consulta = \"INSERT INTO robotmovil.metricas (Referencia, Nombre) VALUES (?, ?)\";\n\n    // Parámetros para la consulta SQL\n    var parametros = [referencia, nombre];\n\n    // Configurar el mensaje para el nodo MySQL\n    msg.topic = consulta;\n    msg.payload = parametros;\n\n    // Pasar el mensaje al nodo MySQL\n    return msg;\n} else {\n    // No se ha recibido ningún mensaje del contador, no hacer nada\n    return null;\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 160,
+        "wires": [
+            [
+                "39ce5cea78dad353"
+            ]
+        ]
+    },
+    {
+        "id": "4ad5db1d8170bbd2",
+        "type": "ui_text_input",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "label": "nombre Robot",
+        "tooltip": "",
+        "group": "b1c3cc6c64b47361",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 180,
+        "y": 120,
+        "wires": [
+            [
+                "9e43f77c097c6a90"
+            ]
+        ]
+    },
+    {
+        "id": "3280f8055fb8796e",
+        "type": "ui_text_input",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "label": "referencia",
+        "tooltip": "",
+        "group": "b1c3cc6c64b47361",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 200,
+        "y": 80,
+        "wires": [
+            [
+                "f2d55a46f3b2f6f0"
+            ]
+        ]
+    },
+    {
+        "id": "0a13c9f870f230b9",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "consulta contador",
+        "func": "// Consulta SQL para contar el número de registros en la tabla 'Metricas'\nvar consulta = \"SELECT COUNT(*) AS total FROM robotmovil.metricas\";\n\n// Configurar el mensaje para el nodo MySQL\nmsg.topic = consulta;\n\n// Pasar el mensaje al nodo MySQL\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 180,
+        "wires": [
+            [
+                "39ce5cea78dad353"
+            ]
+        ]
+    },
+    {
+        "id": "f2d55a46f3b2f6f0",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "function 61",
+        "func": "global.set(\"ref\", msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9e43f77c097c6a90",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "function 62",
+        "func": "global.set(\"nombre\", msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6d8aeda6fdfe2ab7",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "mandar las opciones",
+        "func": "var dropdownOp = [];\n\nfor (var i = 0; i < msg.payload.length; i++) {\n    var nombreR = msg.payload[i].Nombre; \n    var ref = msg.payload[i].Referencia;\n    var dropdownOption = {[nombreR]:ref};\n    dropdownOp.push(dropdownOption);  \n}\n\nmsg.options = dropdownOp;\n\nreturn msg;\n\n/*var debugMsg = {\n    payload: dropdownOp\n};\n\nnode.send(debugMsg);\n*/\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 240,
+        "wires": [
+            [
+                "c538f566b0a583f0"
+            ]
+        ]
+    },
+    {
+        "id": "c538f566b0a583f0",
+        "type": "ui_dropdown",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "5c1445fb38b7de83",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "",
+                "value": "",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 960,
+        "y": 240,
+        "wires": [
+            [
+                "de9e06a8dab50b30",
+                "597fd557cc92a42a"
+            ]
+        ]
+    },
+    {
+        "id": "619fec3116ddbf0b",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "consulta Robots",
+        "func": "// Consulta SQL para contar el número de registros en la tabla 'Metricas'\nvar consulta = \"SELECT Nombre,Referencia FROM robotmovil.metricas\";\n\n// Configurar el mensaje para el nodo MySQL\nmsg.topic = consulta;\n\n// Pasar el mensaje al nodo MySQL\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 240,
+        "wires": [
+            [
+                "4be809d08dd12c0b"
+            ]
+        ]
+    },
+    {
+        "id": "4be809d08dd12c0b",
+        "type": "mysql",
+        "z": "2b323ae02a4fb001",
+        "mydb": "77eccf650e9e1b9d",
+        "name": "",
+        "x": 570,
+        "y": 240,
+        "wires": [
+            [
+                "6d8aeda6fdfe2ab7"
+            ]
+        ]
+    },
+    {
+        "id": "de9e06a8dab50b30",
+        "type": "ui_text",
+        "z": "2b323ae02a4fb001",
+        "group": "5c1445fb38b7de83",
+        "order": 3,
+        "width": 8,
+        "height": 1,
+        "name": "",
+        "label": "Referencia del Robot",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 1200,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "abb8bfbea61c5463",
+        "type": "ui_text_input",
+        "z": "2b323ae02a4fb001",
+        "name": "editor referencia",
+        "label": "Referencia",
+        "tooltip": "ingrese nueva Referencia",
+        "group": "5c1445fb38b7de83",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "ref",
+        "topicType": "msg",
+        "x": 280,
+        "y": 380,
+        "wires": [
+            [
+                "92a880866d99bee0"
+            ]
+        ]
+    },
+    {
+        "id": "a7968c01a22f5b6d",
+        "type": "ui_text_input",
+        "z": "2b323ae02a4fb001",
+        "name": "editor nombre",
+        "label": "Nombre",
+        "tooltip": "Ingrese Nuevo Nombre",
+        "group": "5c1445fb38b7de83",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 280,
+        "y": 420,
+        "wires": [
+            [
+                "9d86b8f82dbb428e"
+            ]
+        ]
+    },
+    {
+        "id": "9268ec0eacfd21dc",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "Mandar actualizaciones",
+        "func": "var opciones = global.get(\"reftoEdit\");\nvar nuevoNombre = global.get(\"nombrEdit\");\nvar nuevaref = global.get(\"refEdit\");\n\nif ((nuevoNombre !== null && nuevoNombre !== \"\") && (nuevaref !== null && nuevaref !== \"\")) {\n    msg.topic = `UPDATE robotmovil.metricas SET Referencia = '${nuevaref}', Nombre = '${nuevoNombre}' WHERE Referencia = '${opciones}'`;\n} else if (nuevoNombre !== null && nuevoNombre !== \"\") {\n    msg.topic = `UPDATE robotmovil.metricas SET Nombre = '${nuevoNombre}' WHERE Referencia = '${opciones}'`;\n} else if (nuevaref !== null && nuevaref !== \"\") {\n    msg.topic = `UPDATE robotmovil.metricas SET Referencia = '${nuevaref}' WHERE Referencia = '${opciones}'`;\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 460,
+        "wires": [
+            [
+                "04c1cd89cc696d24"
+            ]
+        ]
+    },
+    {
+        "id": "92a880866d99bee0",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "global EditREF",
+        "func": "global.set(\"refEdit\", msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9d86b8f82dbb428e",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "Edit Nombre",
+        "func": "global.set(\"nombrEdit\", msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d5dd426c8baf75ea",
+        "type": "ui_button",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "group": "b1c3cc6c64b47361",
+        "order": 5,
+        "width": 5,
+        "height": 1,
+        "passthru": false,
+        "label": "Ingresar",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 200,
+        "y": 220,
+        "wires": [
+            [
+                "0a13c9f870f230b9",
+                "619fec3116ddbf0b",
+                "b88c75db4b897fea"
+            ]
+        ]
+    },
+    {
+        "id": "3748087740ef33bf",
+        "type": "ui_button",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "group": "5c1445fb38b7de83",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Actualizar",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 200,
+        "y": 460,
+        "wires": [
+            [
+                "9268ec0eacfd21dc"
+            ]
+        ]
+    },
+    {
+        "id": "597fd557cc92a42a",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "opciones",
+        "func": "global.set(\"reftoEdit\", msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1160,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "04c1cd89cc696d24",
+        "type": "mysql",
+        "z": "2b323ae02a4fb001",
+        "mydb": "77eccf650e9e1b9d",
+        "name": "",
+        "x": 730,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4d47f487e9236c2d",
+        "type": "ui_dropdown",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "a7f7d4b9fab4e734",
+        "order": 3,
+        "width": 7,
+        "height": 1,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "",
+                "value": "",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 960,
+        "y": 660,
+        "wires": [
+            [
+                "5142f31c3dc85eb7",
+                "4eb9d3328e6b48a6"
+            ]
+        ]
+    },
+    {
+        "id": "2a354974bb6e7c09",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "mandar las opciones",
+        "func": "var dropdownOp = [];\n\nfor (var i = 0; i < msg.payload.length; i++) {\n    var nombreR = msg.payload[i].Nombre; \n    var ref = msg.payload[i].Referencia;\n    var dropdownOption = {[nombreR]:ref};\n    dropdownOp.push(dropdownOption);  \n}\n\nmsg.options = dropdownOp;\n\nreturn msg;\n\n/*var debugMsg = {\n    payload: dropdownOp\n};\n\nnode.send(debugMsg);\n*/\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 660,
+        "wires": [
+            [
+                "4d47f487e9236c2d"
+            ]
+        ]
+    },
+    {
+        "id": "98d9fab76281f563",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "consulta Robots",
+        "func": "// Consulta SQL para contar el número de registros en la tabla 'Metricas'\nvar consulta = \"SELECT Nombre,Referencia FROM robotmovil.metricas\";\n\n// Configurar el mensaje para el nodo MySQL\nmsg.topic = consulta;\n\n// Pasar el mensaje al nodo MySQL\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 660,
+        "wires": [
+            [
+                "93f86b181e35df91"
+            ]
+        ]
+    },
+    {
+        "id": "93f86b181e35df91",
+        "type": "mysql",
+        "z": "2b323ae02a4fb001",
+        "mydb": "77eccf650e9e1b9d",
+        "name": "",
+        "x": 570,
+        "y": 660,
+        "wires": [
+            [
+                "2a354974bb6e7c09"
+            ]
+        ]
+    },
+    {
+        "id": "9257803e1af31da7",
+        "type": "ui_button",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "group": "a7f7d4b9fab4e734",
+        "order": 1,
+        "width": 4,
+        "height": 1,
+        "passthru": false,
+        "label": "actualizar robots",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 200,
+        "y": 660,
+        "wires": [
+            [
+                "98d9fab76281f563"
+            ]
+        ]
+    },
+    {
+        "id": "5142f31c3dc85eb7",
+        "type": "ui_text",
+        "z": "2b323ae02a4fb001",
+        "group": "a7f7d4b9fab4e734",
+        "order": 4,
+        "width": 7,
+        "height": 1,
+        "name": "",
+        "label": "Referencia del Robot",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 1160,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "4eb9d3328e6b48a6",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "opciones",
+        "func": "global.set(\"seguimiento\", msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1120,
+        "y": 660,
+        "wires": [
+            [
+                "f93b213e1fe6a577"
+            ]
+        ]
+    },
+    {
+        "id": "281792c567b18b12",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "function 63",
+        "func": "msg.payload = parseFloat(msg.payload.toFixed(1));\nglobal.set(\"bateria\", msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 780,
+        "wires": [
+            [
+                "ab363a824358dc41"
+            ]
+        ]
+    },
+    {
+        "id": "3bae1576af9ee782",
+        "type": "random",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "low": "0.1",
+        "high": "1.5",
+        "inte": "false",
+        "property": "payload",
+        "x": 780,
+        "y": 720,
+        "wires": [
+            [
+                "281792c567b18b12"
+            ]
+        ]
+    },
+    {
+        "id": "c4b8ab180cc72949",
+        "type": "random",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "low": "1.6",
+        "high": "2.5",
+        "inte": "false",
+        "property": "payload",
+        "x": 780,
+        "y": 760,
+        "wires": [
+            [
+                "281792c567b18b12"
+            ]
+        ]
+    },
+    {
+        "id": "1d608dec2df62e84",
+        "type": "random",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "low": "2.6",
+        "high": "3.5",
+        "inte": "false",
+        "property": "payload",
+        "x": 780,
+        "y": 800,
+        "wires": [
+            [
+                "281792c567b18b12"
+            ]
+        ]
+    },
+    {
+        "id": "69a803138bf9dd21",
+        "type": "random",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "low": "3.6",
+        "high": "5.0",
+        "inte": "false",
+        "property": "payload",
+        "x": 780,
+        "y": 840,
+        "wires": [
+            [
+                "281792c567b18b12"
+            ]
+        ]
+    },
+    {
+        "id": "2790c247eb965ed6",
+        "type": "trigger",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "op1": "",
+        "op2": "",
+        "op1type": "pay",
+        "op2type": "pay",
+        "duration": "-10",
+        "extend": false,
+        "overrideDelay": true,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 410,
+        "y": 780,
+        "wires": [
+            [
+                "565842a69fa11896"
+            ]
+        ]
+    },
+    {
+        "id": "565842a69fa11896",
+        "type": "switch",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "btwn",
+                "v": "0",
+                "vt": "num",
+                "v2": "1.5",
+                "v2t": "num"
+            },
+            {
+                "t": "btwn",
+                "v": "1.5",
+                "vt": "num",
+                "v2": "2.5",
+                "v2t": "num"
+            },
+            {
+                "t": "btwn",
+                "v": "2.5",
+                "vt": "num",
+                "v2": "3.5",
+                "v2t": "num"
+            },
+            {
+                "t": "btwn",
+                "v": "3.5",
+                "vt": "num",
+                "v2": "5",
+                "v2t": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 610,
+        "y": 780,
+        "wires": [
+            [
+                "3bae1576af9ee782"
+            ],
+            [
+                "c4b8ab180cc72949"
+            ],
+            [
+                "1d608dec2df62e84"
+            ],
+            [
+                "69a803138bf9dd21"
+            ]
+        ]
+    },
+    {
+        "id": "78ac437da9121f82",
+        "type": "ui_slider",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "label": "Nivel de bateria",
+        "tooltip": "",
+        "group": "2df04ca44555549d",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": 0,
+        "max": "5",
+        "step": "0.5",
+        "x": 200,
+        "y": 780,
+        "wires": [
+            [
+                "2790c247eb965ed6"
+            ]
+        ]
+    },
+    {
+        "id": "1042553cc942da27",
+        "type": "ui_slider",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "label": "Revoluciones Motores",
+        "tooltip": "",
+        "group": "c28de80af5ea2c8b",
+        "order": 1,
+        "width": 7,
+        "height": 1,
+        "passthru": true,
+        "outs": "end",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "x": 200,
+        "y": 940,
+        "wires": [
+            [
+                "aa868db0cec13e82",
+                "091608a5499c3a5b"
+            ]
+        ]
+    },
+    {
+        "id": "7def3457329c8fa9",
+        "type": "random",
+        "z": "2b323ae02a4fb001",
+        "name": "motor izq",
+        "low": "0",
+        "high": "100",
+        "inte": "true",
+        "property": "payload",
+        "x": 620,
+        "y": 900,
+        "wires": [
+            [
+                "899c4e7483e70b4c"
+            ]
+        ]
+    },
+    {
+        "id": "091608a5499c3a5b",
+        "type": "trigger",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "op1": "",
+        "op2": "",
+        "op1type": "pay",
+        "op2type": "pay",
+        "duration": "-2",
+        "extend": false,
+        "overrideDelay": true,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 420,
+        "y": 900,
+        "wires": [
+            [
+                "7def3457329c8fa9"
+            ]
+        ]
+    },
+    {
+        "id": "4b43a0234708c788",
+        "type": "ui_gauge",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "group": "c28de80af5ea2c8b",
+        "order": 2,
+        "width": 7,
+        "height": 3,
+        "gtype": "gage",
+        "title": "motor Izquierdo",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 1020,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "899c4e7483e70b4c",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "function 64",
+        "func": "global.set(\"motorIzq\", msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 900,
+        "wires": [
+            [
+                "4b43a0234708c788"
+            ]
+        ]
+    },
+    {
+        "id": "ab363a824358dc41",
+        "type": "ui_gauge",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "group": "2df04ca44555549d",
+        "order": 2,
+        "width": 7,
+        "height": 3,
+        "gtype": "gage",
+        "title": "Bateria",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 10,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 1160,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "acca64eefa96ea20",
+        "type": "random",
+        "z": "2b323ae02a4fb001",
+        "name": "motor der",
+        "low": "0",
+        "high": "100",
+        "inte": "true",
+        "property": "payload",
+        "x": 620,
+        "y": 980,
+        "wires": [
+            [
+                "9977e5e3fad37ee5"
+            ]
+        ]
+    },
+    {
+        "id": "aa868db0cec13e82",
+        "type": "trigger",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "op1": "",
+        "op2": "",
+        "op1type": "pay",
+        "op2type": "pay",
+        "duration": "-2",
+        "extend": false,
+        "overrideDelay": true,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 420,
+        "y": 980,
+        "wires": [
+            [
+                "acca64eefa96ea20"
+            ]
+        ]
+    },
+    {
+        "id": "11679f0e2191cce1",
+        "type": "ui_gauge",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "group": "c28de80af5ea2c8b",
+        "order": 4,
+        "width": 7,
+        "height": 3,
+        "gtype": "gage",
+        "title": "motor Derecho",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 1020,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "9977e5e3fad37ee5",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "function 65",
+        "func": "global.set(\"motorDer\", msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 980,
+        "wires": [
+            [
+                "11679f0e2191cce1"
+            ]
+        ]
+    },
+    {
+        "id": "5249553240ca0a11",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "function 66",
+        "func": "global.set(\"distancia\", msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 1060,
+        "wires": [
+            [
+                "e3f092f1baeb5061"
+            ]
+        ]
+    },
+    {
+        "id": "1fd39671866c9d40",
+        "type": "ui_slider",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "label": "Distancia Obstaculos",
+        "tooltip": "",
+        "group": "a8357e472f49bd53",
+        "order": 3,
+        "width": 7,
+        "height": 1,
+        "passthru": true,
+        "outs": "end",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "x": 200,
+        "y": 1060,
+        "wires": [
+            [
+                "69497173b250b6d1"
+            ]
+        ]
+    },
+    {
+        "id": "e3f092f1baeb5061",
+        "type": "ui_gauge",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "group": "a8357e472f49bd53",
+        "order": 2,
+        "width": 9,
+        "height": 3,
+        "gtype": "gage",
+        "title": "Distancia Obstaculos",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 1040,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "0c54da20eb36a8f8",
+        "type": "random",
+        "z": "2b323ae02a4fb001",
+        "name": "dist obs",
+        "low": "0",
+        "high": "100",
+        "inte": "true",
+        "property": "payload",
+        "x": 620,
+        "y": 1060,
+        "wires": [
+            [
+                "5249553240ca0a11"
+            ]
+        ]
+    },
+    {
+        "id": "69497173b250b6d1",
+        "type": "trigger",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "op1": "",
+        "op2": "",
+        "op1type": "pay",
+        "op2type": "pay",
+        "duration": "-1",
+        "extend": false,
+        "overrideDelay": true,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 420,
+        "y": 1060,
+        "wires": [
+            [
+                "0c54da20eb36a8f8"
+            ]
+        ]
+    },
+    {
+        "id": "0641e92801e07bd5",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "function 67",
+        "func": "var opciones = global.get(\"seguimiento\");\nvar bateria = global.get(\"bateria\");\nvar motorIzq = global.get(\"motorIzq\");\nvar motorDer = global.get(\"motorDer\");\nvar distOb = global.get(\"distancia\");\n\n// Consulta SQL para actualizar los datos en la fila correspondiente a la referencia especificada\nvar consulta = `UPDATE robotmovil.metricas \n                SET NivBateria = ?, RvMI = ?, RvMD = ?, DistOb = ?\n                WHERE Referencia = ?`;\n\n// Parámetros para la consulta SQL\nvar parametros = [bateria, motorIzq, motorDer, distOb, opciones];\n\n// Configurar el mensaje para el nodo MySQL\nmsg.topic = consulta;\nmsg.payload = parametros;\n\n// Pasar el mensaje al nodo MySQL\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 1180,
+        "wires": [
+            [
+                "5885c36b5cb23ab1"
+            ]
+        ]
+    },
+    {
+        "id": "5885c36b5cb23ab1",
+        "type": "mysql",
+        "z": "2b323ae02a4fb001",
+        "mydb": "77eccf650e9e1b9d",
+        "name": "",
+        "x": 610,
+        "y": 1180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "22d6b0e02d17a003",
+        "type": "debug",
+        "z": "2b323ae02a4fb001",
+        "name": "debug 38",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "b27208a40b0b6165",
+        "type": "inject",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 230,
+        "y": 1180,
+        "wires": [
+            [
+                "0641e92801e07bd5",
+                "e001b8dd871945e7"
+            ]
+        ]
+    },
+    {
+        "id": "b88c75db4b897fea",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "func": "msg.payload = {\n  // You bucket\n  // Optional (it can be defined in the node credentials settings)\n  bucket: 'FBD_WSMR',\n\n  // Precision of timestamp\n  // Optional\n  // Can be `ns` (nanoseconds),\n  //        `us` (microseconds),\n  //        `ms` (milliseconds),\n  //        `s` (seconds).\n  // The default is `ns`\n  // Note: if you set the `timestamp` field to `Date.now()`, you have to set the `precision` to `ms`\n  precision: 'ms',\n\n  // Data to send to InfluxDB\n  // Can be an array of objects or only one object\n  data: [\n    {\n      measurement: 'RobotMovil',\n\n      tags: {\n        referecia: global.get(\"ref\"),\n        nombre: global.get(\"Nombre\"),\n        hardwareVersion: '1.0.1',\n        softwareVersion: '1.0.1',\n        location: 'factory-Industria4.0'\n      },\n\n     fields: {\n        NivBateria: 0,\n        RvMI: 0,\n        RvMD: 0,\n        DistOb: 0,\n        // ColisionIR: 0\n      },\n      timestamp: Date.now()\n    },\n\n    // More data can be send here, simply re add an object\n    // { ... },\n  ]\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 300,
+        "wires": [
+            [
+                "268edf99772a4b24"
+            ]
+        ]
+    },
+    {
+        "id": "268edf99772a4b24",
+        "type": "Stackhero-InfluxDB-v2-write",
+        "z": "2b323ae02a4fb001",
+        "server": "26a770db.4c878",
+        "name": "Escritura INFLUX",
+        "x": 550,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e001b8dd871945e7",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "func": "var opciones = global.get(\"seguimiento\");\nvar bateria = global.get(\"bateria\");\nvar motorIzq = global.get(\"motorIzq\");\nvar motorDer = global.get(\"motorDer\");\nvar distOb = global.get(\"distancia\");\nvar nombre = global.get(\"nombre\");\n\n\n\n\nmsg.payload = {\n  // You bucket\n  // Optional (it can be defined in the node credentials settings)\n  bucket: 'ROBOTS',\n\n  // Precision of timestamp\n  // Optional\n  // Can be `ns` (nanoseconds),\n  //        `us` (microseconds),\n  //        `ms` (milliseconds),\n  //        `s` (seconds).\n  // The default is `ns`\n  // Note: if you set the `timestamp` field to `Date.now()`, you have to set the `precision` to `ms`\n  precision: 'ms',\n\n  // Data to send to InfluxDB\n  // Can be an array of objects or only one object\n  data: [\n    {\n      measurement: 'RobotMovil',\n\n      tags: {\n        referecia: opciones,\n        nombre: nombre,\n        hardwareVersion: '1.0.1',\n        softwareVersion: '1.0.1',\n        location: 'factory-Industria4.0'\n      },\n\n     fields: {\n       NivBateria: bateria,\n       RvMI: motorIzq,\n       RvMD: motorDer,\n       DistOb: distOb,\n\n      },\n      timestamp: Date.now()\n    },\n\n    // More data can be send here, simply re add an object\n    // { ... },\n  ]\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 1300,
+        "wires": [
+            [
+                "abc6b175995666a7"
+            ]
+        ]
+    },
+    {
+        "id": "abc6b175995666a7",
+        "type": "Stackhero-InfluxDB-v2-write",
+        "z": "2b323ae02a4fb001",
+        "server": "26a770db.4c878",
+        "name": "Escritura INFLUX",
+        "x": 650,
+        "y": 1300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "79aac0f7f4b58649",
+        "type": "debug",
+        "z": "2b323ae02a4fb001",
+        "name": "debug 39",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1580,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "f93b213e1fe6a577",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "consulta nombre Robots",
+        "func": "// Consulta SQL para contar el número de registros en la tabla 'Metricas'\nvar nombre = \"SELECT Nombre FROM robotmovil.Metricas WHERE Referencia = '\"+global.get(\"seguimiento\")+\"'\";\n\n// Configurar el mensaje para el nodo MySQL\nmsg.topic = nombre;\n\n// Pasar el mensaje al nodo MySQL\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1130,
+        "y": 720,
+        "wires": [
+            [
+                "08a8c3a9031da605"
+            ]
+        ]
+    },
+    {
+        "id": "08a8c3a9031da605",
+        "type": "mysql",
+        "z": "2b323ae02a4fb001",
+        "mydb": "77eccf650e9e1b9d",
+        "name": "",
+        "x": 1350,
+        "y": 720,
+        "wires": [
+            [
+                "9ac93e2e9c542fc7"
+            ]
+        ]
+    },
+    {
+        "id": "5974a0ac8a5f729b",
+        "type": "function",
+        "z": "2b323ae02a4fb001",
+        "name": "opciones",
+        "func": "global.set(\"nombre\", msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1760,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9ac93e2e9c542fc7",
+        "type": "change",
+        "z": "2b323ae02a4fb001",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].Nombre",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1560,
+        "y": 720,
+        "wires": [
+            [
+                "79aac0f7f4b58649",
+                "5974a0ac8a5f729b"
+            ]
+        ]
+    },
+    {
+        "id": "9886db9b58a9dbef",
+        "type": "comment",
+        "z": "2b323ae02a4fb001",
+        "name": "con la referencia obtiene el nombre, ",
+        "info": "",
+        "x": 1640,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "178abb663302fcd0",
+        "type": "comment",
+        "z": "2b323ae02a4fb001",
+        "name": "falta la simulacion de colision, se elimino para simplificar",
+        "info": "",
+        "x": 880,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "511ec219537d560c",
+        "type": "ui_spacer",
+        "z": "2b323ae02a4fb001",
+        "name": "spacer",
+        "group": "a7f7d4b9fab4e734",
+        "order": 2,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "59c86e8ec742e956",
+        "type": "ui_spacer",
+        "z": "2b323ae02a4fb001",
+        "name": "spacer",
+        "group": "a7f7d4b9fab4e734",
+        "order": 5,
+        "width": 4,
+        "height": 1
+    },
+    {
+        "id": "04028e3504131de2",
+        "type": "ui_spacer",
+        "z": "2b323ae02a4fb001",
+        "name": "spacer",
+        "group": "c28de80af5ea2c8b",
+        "order": 3,
+        "width": 7,
+        "height": 1
+    },
+    {
+        "id": "c303d479a0f1d4d7",
+        "type": "ui_spacer",
+        "z": "2b323ae02a4fb001",
+        "name": "spacer",
+        "group": "a8357e472f49bd53",
+        "order": 1,
+        "width": 7,
+        "height": 1
+    },
+    {
+        "id": "efd0e4037b02ecbc",
+        "type": "ui_spacer",
+        "z": "2b323ae02a4fb001",
+        "name": "spacer",
+        "group": "a8357e472f49bd53",
+        "order": 4,
+        "width": 7,
+        "height": 1
+    },
+    {
+        "id": "81b0992e54870a8f",
+        "type": "ui_spacer",
+        "z": "2b323ae02a4fb001",
+        "name": "spacer",
+        "group": "b1c3cc6c64b47361",
+        "order": 4,
+        "width": 4,
+        "height": 1
+    },
+    {
+        "id": "512432612085410f",
+        "type": "ui_spacer",
+        "z": "2b323ae02a4fb001",
+        "name": "spacer",
+        "group": "5c1445fb38b7de83",
+        "order": 2,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "9e2cfcfb5d460e50",
+        "type": "ui_spacer",
+        "z": "2b323ae02a4fb001",
+        "name": "spacer",
+        "group": "5c1445fb38b7de83",
+        "order": 4,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "b1c3cc6c64b47361",
+        "type": "ui_group",
+        "name": "robots ingresador",
+        "tab": "84f07f37456f9dad",
+        "order": 1,
+        "disp": true,
+        "width": 9,
+        "collapse": false
+    },
+    {
+        "id": "77eccf650e9e1b9d",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "robotmovil",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "5c1445fb38b7de83",
+        "type": "ui_group",
+        "name": "Actualizar información",
+        "tab": "84f07f37456f9dad",
+        "order": 2,
+        "disp": true,
+        "width": 10,
+        "collapse": false
+    },
+    {
+        "id": "a7f7d4b9fab4e734",
+        "type": "ui_group",
+        "name": "robots",
+        "tab": "faf94bc3c064baea",
+        "order": 1,
+        "disp": true,
+        "width": 7,
+        "collapse": false
+    },
+    {
+        "id": "2df04ca44555549d",
+        "type": "ui_group",
+        "name": "Bateria",
+        "tab": "faf94bc3c064baea",
+        "order": 2,
+        "disp": true,
+        "width": 7,
+        "collapse": false
+    },
+    {
+        "id": "c28de80af5ea2c8b",
+        "type": "ui_group",
+        "name": "Motores",
+        "tab": "faf94bc3c064baea",
+        "order": 3,
+        "disp": true,
+        "width": 7,
+        "collapse": false
+    },
+    {
+        "id": "a8357e472f49bd53",
+        "type": "ui_group",
+        "name": "Distancia",
+        "tab": "faf94bc3c064baea",
+        "order": 4,
+        "disp": true,
+        "width": 16,
+        "collapse": false
+    },
+    {
+        "id": "26a770db.4c878",
+        "type": "Stackhero-InfluxDB-v2-Server",
+        "name": "BDPrueba",
+        "host": "us-east-1-1.aws.cloud2.influxdata.com",
+        "port": "443",
+        "tls": true
+    },
+    {
+        "id": "84f07f37456f9dad",
+        "type": "ui_tab",
+        "name": "Ingresar2",
+        "icon": "dashboard",
+        "order": 6,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "faf94bc3c064baea",
+        "type": "ui_tab",
+        "name": "seguimiento2",
+        "icon": "dashboard",
+        "order": 7,
+        "disabled": false,
+        "hidden": false
+    }
+]
