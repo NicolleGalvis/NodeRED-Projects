@@ -1,0 +1,1190 @@
+[
+    {
+        "id": "d74cbc070eb87e24",
+        "type": "tab",
+        "label": "Flow 3",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "28892f81450391c8",
+        "type": "ui_button",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "group": "36242274db957568",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "buscar",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 190,
+        "y": 140,
+        "wires": [
+            [
+                "c69f53db91b3a6b0",
+                "91f67c504f7a16e8"
+            ]
+        ]
+    },
+    {
+        "id": "c69f53db91b3a6b0",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "msg.topic = \"SELECT min(Prod_Id) FROM curso.Productos WHERE Prod_Color = ' ' \"\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 160,
+        "wires": [
+            [
+                "7e4cee0b582a36f5"
+            ]
+        ]
+    },
+    {
+        "id": "4b83973ebc138545",
+        "type": "ui_text",
+        "z": "d74cbc070eb87e24",
+        "group": "36242274db957568",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "ID Producto",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 970,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "3412a676f0533bd4",
+        "type": "change",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0][\"min(Prod_Id)\"]",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 740,
+        "y": 160,
+        "wires": [
+            [
+                "4b83973ebc138545",
+                "9f3884ef6a7912c2"
+            ]
+        ]
+    },
+    {
+        "id": "7e4cee0b582a36f5",
+        "type": "mysql",
+        "z": "d74cbc070eb87e24",
+        "mydb": "3ca75d0c.e8d602",
+        "name": "Mysql",
+        "x": 570,
+        "y": 160,
+        "wires": [
+            [
+                "3412a676f0533bd4"
+            ]
+        ]
+    },
+    {
+        "id": "f741503ddf1ce74e",
+        "type": "ui_text_input",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "label": "Color",
+        "tooltip": "",
+        "group": "36242274db957568",
+        "order": 4,
+        "width": 6,
+        "height": 2,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 270,
+        "y": 280,
+        "wires": [
+            [
+                "51d3345d45037b1d"
+            ]
+        ]
+    },
+    {
+        "id": "a22b2a2148838c3c",
+        "type": "ui_button",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "group": "36242274db957568",
+        "order": 6,
+        "width": 2,
+        "height": 1,
+        "passthru": false,
+        "label": "Agregar",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 280,
+        "y": 340,
+        "wires": [
+            [
+                "94e4df357e77e047"
+            ]
+        ]
+    },
+    {
+        "id": "94e4df357e77e047",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "msg.topic = \"UPDATE curso.productos SET Prod_color ='\" + global.get(\"color\") +\"'\" + \" WHERE Prod_Id =\" + global.get(\"id\") \nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 340,
+        "wires": [
+            [
+                "ecb9a0e09cc70b42"
+            ]
+        ]
+    },
+    {
+        "id": "51d3345d45037b1d",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "global.set(\"color\",msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ecb9a0e09cc70b42",
+        "type": "mysql",
+        "z": "d74cbc070eb87e24",
+        "mydb": "3ca75d0c.e8d602",
+        "name": "Mysql",
+        "x": 670,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "80a517ada9be9965",
+        "type": "ui_text",
+        "z": "d74cbc070eb87e24",
+        "group": "36242274db957568",
+        "order": 2,
+        "width": 6,
+        "height": 2,
+        "name": "",
+        "label": "Producto",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 960,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "9f3884ef6a7912c2",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "global.set(\"id\",msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 960,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "da777897acbbb61c",
+        "type": "change",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].Prod_Descripcion",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 740,
+        "y": 80,
+        "wires": [
+            [
+                "80a517ada9be9965"
+            ]
+        ]
+    },
+    {
+        "id": "91f67c504f7a16e8",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "msg.topic = \"SELECT Prod_Descripcion FROM curso.Productos WHERE Prod_Id=\"+global.get(\"id\")\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 80,
+        "wires": [
+            [
+                "4da7ad2cd11171f7"
+            ]
+        ]
+    },
+    {
+        "id": "4da7ad2cd11171f7",
+        "type": "mysql",
+        "z": "d74cbc070eb87e24",
+        "mydb": "3ca75d0c.e8d602",
+        "name": "Mysql",
+        "x": 570,
+        "y": 80,
+        "wires": [
+            [
+                "da777897acbbb61c"
+            ]
+        ]
+    },
+    {
+        "id": "9471f514c3304fb5",
+        "type": "ui_text_input",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "label": "Descripción del producto",
+        "tooltip": "",
+        "group": "e695bf5d99b7d311",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 210,
+        "y": 560,
+        "wires": [
+            [
+                "81958af7d6c2a203"
+            ]
+        ]
+    },
+    {
+        "id": "a1e1d1162e7e1309",
+        "type": "ui_text_input",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "label": "color producto",
+        "tooltip": "",
+        "group": "e695bf5d99b7d311",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 180,
+        "y": 620,
+        "wires": [
+            [
+                "7d5662450e4899a7"
+            ]
+        ]
+    },
+    {
+        "id": "eff5cbef99f1a174",
+        "type": "ui_text_input",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "label": "Status del producto",
+        "tooltip": "",
+        "group": "e695bf5d99b7d311",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 190,
+        "y": 680,
+        "wires": [
+            [
+                "6c98d25c9dfdb972"
+            ]
+        ]
+    },
+    {
+        "id": "f5fbdc1ee72c7118",
+        "type": "ui_text_input",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "label": "precio del producto",
+        "tooltip": "",
+        "group": "e695bf5d99b7d311",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 190,
+        "y": 740,
+        "wires": [
+            [
+                "8351ba67b459c6e6"
+            ]
+        ]
+    },
+    {
+        "id": "c643387aaa7a33ca",
+        "type": "ui_text_input",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "label": "ID proveedor",
+        "tooltip": "",
+        "group": "e695bf5d99b7d311",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 170,
+        "y": 800,
+        "wires": [
+            [
+                "54b7e3d92d8605e7"
+            ]
+        ]
+    },
+    {
+        "id": "32d7e81514e76f1b",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "msg.topic = \"INSERT INTO curso.productos(Prod_Descripcion, Prod_Color, Prod_Status, Prod_Precio, Prod_ProvId) VALUES('\" + global.get(\"des\") + \"','\" + global.get(\"color2\") + \"',\" + global.get(\"status\") + \",\" + global.get(\"precio\") + \",\" + global.get(\"idprov\")+\")\"\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 900,
+        "wires": [
+            [
+                "819b04799db1cff2",
+                "173b150ef10d68b6"
+            ]
+        ]
+    },
+    {
+        "id": "81958af7d6c2a203",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "global.set(\"des\",msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7d5662450e4899a7",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "global.set(\"color2\",msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6c98d25c9dfdb972",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "global.set(\"status\",msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 680,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8351ba67b459c6e6",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "global.set(\"precio\",msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 740,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "54b7e3d92d8605e7",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "global.set(\"idprov\",msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 800,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0e9ca800920bf57f",
+        "type": "ui_button",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "group": "e695bf5d99b7d311",
+        "order": 7,
+        "width": 2,
+        "height": 1,
+        "passthru": false,
+        "label": "Ingresar",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 320,
+        "y": 900,
+        "wires": [
+            [
+                "32d7e81514e76f1b"
+            ]
+        ]
+    },
+    {
+        "id": "819b04799db1cff2",
+        "type": "mysql",
+        "z": "d74cbc070eb87e24",
+        "mydb": "3ca75d0c.e8d602",
+        "name": "Mysql",
+        "x": 790,
+        "y": 900,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "173b150ef10d68b6",
+        "type": "debug",
+        "z": "d74cbc070eb87e24",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 860,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "03f65bfb2db2cb49",
+        "type": "debug",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "521d8738fc5d1a82",
+        "type": "ui_button",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "group": "0fe8d3f9433eeb2b",
+        "order": 5,
+        "width": 4,
+        "height": 1,
+        "passthru": false,
+        "label": "Buscar",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "search",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 160,
+        "y": 1120,
+        "wires": [
+            [
+                "e5a2f3789ec02691"
+            ]
+        ]
+    },
+    {
+        "id": "ef22c1580380bf04",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "global.set(\"id\",msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 1220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "dc94a802d1ff328e",
+        "type": "ui_text_input",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "label": "Id Cliente",
+        "tooltip": "",
+        "group": "0fe8d3f9433eeb2b",
+        "order": 1,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "",
+        "topicType": "str",
+        "x": 160,
+        "y": 1220,
+        "wires": [
+            [
+                "ef22c1580380bf04"
+            ]
+        ]
+    },
+    {
+        "id": "362d6ba4dd5d6446",
+        "type": "change",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].Cli_RazonSocial",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 840,
+        "y": 1200,
+        "wires": [
+            [
+                "055c87fecbe6754a"
+            ]
+        ]
+    },
+    {
+        "id": "055c87fecbe6754a",
+        "type": "ui_text",
+        "z": "d74cbc070eb87e24",
+        "group": "0fe8d3f9433eeb2b",
+        "order": 3,
+        "width": 6,
+        "height": 3,
+        "name": "",
+        "label": "Razon Social",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 1110,
+        "y": 1200,
+        "wires": []
+    },
+    {
+        "id": "732ce64e815fc53f",
+        "type": "mysql",
+        "z": "d74cbc070eb87e24",
+        "mydb": "3ca75d0c.e8d602",
+        "name": "Mysql",
+        "x": 570,
+        "y": 1120,
+        "wires": [
+            [
+                "03f65bfb2db2cb49",
+                "362d6ba4dd5d6446",
+                "e84102a6a2dc69c8"
+            ]
+        ]
+    },
+    {
+        "id": "54ade803edde4926",
+        "type": "ui_gauge",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "group": "0fe8d3f9433eeb2b",
+        "order": 7,
+        "width": 6,
+        "height": 3,
+        "gtype": "gage",
+        "title": "gauge",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "50000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 1090,
+        "y": 1280,
+        "wires": []
+    },
+    {
+        "id": "e84102a6a2dc69c8",
+        "type": "change",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0][\"sum(Ventas_Total)\"]",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 840,
+        "y": 1280,
+        "wires": [
+            [
+                "54ade803edde4926"
+            ]
+        ]
+    },
+    {
+        "id": "565d44d72c6b723a",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "global.set(\"fecha\", msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 1340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4c278b82c353123f",
+        "type": "ui_date_picker",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "label": "date",
+        "group": "0fe8d3f9433eeb2b",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 130,
+        "y": 1340,
+        "wires": [
+            [
+                "4238695cbec065b2"
+            ]
+        ]
+    },
+    {
+        "id": "4238695cbec065b2",
+        "type": "moment",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "topic": "",
+        "input": "",
+        "format": "'YYYY-MM-DD'",
+        "locale": "en-US",
+        "output": "",
+        "x": 340,
+        "y": 1340,
+        "wires": [
+            [
+                "565d44d72c6b723a"
+            ]
+        ]
+    },
+    {
+        "id": "e5a2f3789ec02691",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "msg.topic = \"SELECT Cli_RazonSocial, sum(Ventas_Total) FROM curso.clientes JOIN curso.ventas ON Ventas_CliId=Cli_Id  WHERE  Ventas_Fecha =\"+ global.get(\"fecha\")+\" AND Cli_Id =\"+global.get(\"id\")\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 1120,
+        "wires": [
+            [
+                "732ce64e815fc53f"
+            ]
+        ]
+    },
+    {
+        "id": "0739e5fe337f4e8b",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "global.set(\"fecha\", msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 1600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c2663b2bc358a87b",
+        "type": "moment",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "topic": "",
+        "input": "",
+        "format": "'YYYY-MM-DD'",
+        "locale": "es-MX",
+        "output": "",
+        "x": 400,
+        "y": 1600,
+        "wires": [
+            [
+                "0739e5fe337f4e8b"
+            ]
+        ]
+    },
+    {
+        "id": "d2cbb003383ad407",
+        "type": "ui_date_picker",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "label": "FECHA",
+        "group": "0fe8d3f9433eeb2b",
+        "order": 10,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 140,
+        "y": 1600,
+        "wires": [
+            [
+                "c2663b2bc358a87b"
+            ]
+        ]
+    },
+    {
+        "id": "17d5046e82705882",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "global.set(\"N_factura\", msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 1520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a9f6429c345e95cc",
+        "type": "ui_text_input",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "label": "N° de factura",
+        "tooltip": "",
+        "group": "0fe8d3f9433eeb2b",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "",
+        "topicType": "str",
+        "x": 150,
+        "y": 1520,
+        "wires": [
+            [
+                "17d5046e82705882"
+            ]
+        ]
+    },
+    {
+        "id": "528ac472a648f282",
+        "type": "ui_button",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "group": "0fe8d3f9433eeb2b",
+        "order": 8,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "label": "Buscar Diferencia de fechas",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "search",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 200,
+        "y": 1900,
+        "wires": [
+            [
+                "d3fbeb836225129e"
+            ]
+        ]
+    },
+    {
+        "id": "d3fbeb836225129e",
+        "type": "function",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "func": "msg.topic = \"SELECT DATEDIFF(\" + global.get(\"fecha\") + \",Ventas_Fecha) AS Dias,Ventas_Fecha FROM curso.ventas WHERE ventas_NroFactura =\" + global.get(\"N_factura\")\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 1860,
+        "wires": [
+            [
+                "8264531ec40b001e"
+            ]
+        ]
+    },
+    {
+        "id": "0593d14668df43eb",
+        "type": "change",
+        "z": "d74cbc070eb87e24",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].Dias",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 920,
+        "y": 1880,
+        "wires": [
+            [
+                "487a5aaa38f15e3e"
+            ]
+        ]
+    },
+    {
+        "id": "487a5aaa38f15e3e",
+        "type": "ui_text",
+        "z": "d74cbc070eb87e24",
+        "group": "0fe8d3f9433eeb2b",
+        "order": 12,
+        "width": 6,
+        "height": 2,
+        "name": "",
+        "label": "dias",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 1120,
+        "y": 1880,
+        "wires": []
+    },
+    {
+        "id": "8264531ec40b001e",
+        "type": "mysql",
+        "z": "d74cbc070eb87e24",
+        "mydb": "3ca75d0c.e8d602",
+        "name": "Mysql",
+        "x": 710,
+        "y": 1860,
+        "wires": [
+            [
+                "0593d14668df43eb"
+            ]
+        ]
+    },
+    {
+        "id": "a9a850dc22da267c",
+        "type": "ui_spacer",
+        "z": "d74cbc070eb87e24",
+        "name": "spacer",
+        "group": "ea9734c86c94ce87",
+        "order": 10,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "54e47da2d2302fcb",
+        "type": "ui_spacer",
+        "z": "d74cbc070eb87e24",
+        "name": "spacer",
+        "group": "ea9734c86c94ce87",
+        "order": 12,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "c63ad6466d42f2ee",
+        "type": "ui_spacer",
+        "z": "d74cbc070eb87e24",
+        "name": "spacer",
+        "group": "ea9734c86c94ce87",
+        "order": 13,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "7f88b9aa9021777e",
+        "type": "ui_spacer",
+        "z": "d74cbc070eb87e24",
+        "name": "spacer",
+        "group": "0fe8d3f9433eeb2b",
+        "order": 4,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "6d8d6188a31c5547",
+        "type": "ui_spacer",
+        "z": "d74cbc070eb87e24",
+        "name": "spacer",
+        "group": "0fe8d3f9433eeb2b",
+        "order": 6,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "cfa06e01b76b091d",
+        "type": "ui_spacer",
+        "z": "d74cbc070eb87e24",
+        "name": "spacer",
+        "group": "36242274db957568",
+        "order": 5,
+        "width": 4,
+        "height": 1
+    },
+    {
+        "id": "731788d4271348c8",
+        "type": "ui_spacer",
+        "z": "d74cbc070eb87e24",
+        "name": "spacer",
+        "group": "e695bf5d99b7d311",
+        "order": 6,
+        "width": 4,
+        "height": 1
+    },
+    {
+        "id": "36242274db957568",
+        "type": "ui_group",
+        "name": "actividad 4",
+        "tab": "1f39576f7af145bb",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "3ca75d0c.e8d602",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "curso",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "e695bf5d99b7d311",
+        "type": "ui_group",
+        "name": "actividad 5",
+        "tab": "1f39576f7af145bb",
+        "order": 5,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "0fe8d3f9433eeb2b",
+        "type": "ui_group",
+        "name": "actividad 3",
+        "tab": "1f39576f7af145bb",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "ea9734c86c94ce87",
+        "type": "ui_group",
+        "name": "Actividad 2",
+        "tab": "1f39576f7af145bb",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "1f39576f7af145bb",
+        "type": "ui_tab",
+        "name": "Actividades",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]

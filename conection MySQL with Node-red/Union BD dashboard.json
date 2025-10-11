@@ -1,0 +1,676 @@
+[
+    {
+        "id": "d3a1fe4f023b936b",
+        "type": "tab",
+        "label": "actividad 12/ 9 / 22",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "e959242865111c07",
+        "type": "ui_button",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "group": "ea9734c86c94ce87",
+        "order": 3,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "label": "Busqueda",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "search",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 200,
+        "y": 740,
+        "wires": [
+            [
+                "fb84a3ce44ee4f1c"
+            ]
+        ]
+    },
+    {
+        "id": "fb84a3ce44ee4f1c",
+        "type": "function",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "func": "msg.topic = \"SELECT * FROM ventas WHERE year(Ventas_Fecha)=2018 and MONTH(Ventas_Fecha) LIKE '%\" + global.get(\"mes\") + \"%' and Ventas_CliId=\" + global.get(\"idd\") \nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 740,
+        "wires": [
+            [
+                "895dd0a436c2efc3"
+            ]
+        ]
+    },
+    {
+        "id": "3d3777f29157ef59",
+        "type": "debug",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 910,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "55ffc79fb95f417e",
+        "type": "function",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "func": "global.set(\"mes\",msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 900,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c189c0b5a1e9e673",
+        "type": "ui_text_input",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "label": "Consultas por mes año 2018",
+        "tooltip": "",
+        "group": "ea9734c86c94ce87",
+        "order": 2,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "",
+        "topicType": "str",
+        "x": 200,
+        "y": 900,
+        "wires": [
+            [
+                "55ffc79fb95f417e"
+            ]
+        ]
+    },
+    {
+        "id": "895dd0a436c2efc3",
+        "type": "mysql",
+        "z": "d3a1fe4f023b936b",
+        "mydb": "3ca75d0c.e8d602",
+        "name": "Mysql",
+        "x": 670,
+        "y": 740,
+        "wires": [
+            [
+                "3d3777f29157ef59",
+                "4a64b338343419c5",
+                "890c0ea35db5ddc9",
+                "480c4dd36c4e855c",
+                "6351c5a762f8d966",
+                "7ab124509b074c2e",
+                "140275d3b61825b8",
+                "1eac6e460747a883"
+            ]
+        ]
+    },
+    {
+        "id": "4a64b338343419c5",
+        "type": "change",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].Ventas_Fecha",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 920,
+        "y": 680,
+        "wires": [
+            [
+                "bf3596a83189ae92"
+            ]
+        ]
+    },
+    {
+        "id": "890c0ea35db5ddc9",
+        "type": "change",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].Ventas_CliId",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 920,
+        "y": 760,
+        "wires": [
+            [
+                "a21c1cbd4df380c1"
+            ]
+        ]
+    },
+    {
+        "id": "bf3596a83189ae92",
+        "type": "ui_text",
+        "z": "d3a1fe4f023b936b",
+        "group": "ea9734c86c94ce87",
+        "order": 5,
+        "width": 3,
+        "height": 3,
+        "name": "",
+        "label": "Ventas fecha",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 1130,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "a21c1cbd4df380c1",
+        "type": "ui_text",
+        "z": "d3a1fe4f023b936b",
+        "group": "ea9734c86c94ce87",
+        "order": 4,
+        "width": 3,
+        "height": 3,
+        "name": "",
+        "label": "Ventas cliente id",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 1140,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "480c4dd36c4e855c",
+        "type": "change",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].Ventas_NroFactura",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 920,
+        "y": 820,
+        "wires": [
+            [
+                "e9cf70ef5b9dec58"
+            ]
+        ]
+    },
+    {
+        "id": "e9cf70ef5b9dec58",
+        "type": "ui_text",
+        "z": "d3a1fe4f023b936b",
+        "group": "ea9734c86c94ce87",
+        "order": 7,
+        "width": 3,
+        "height": 3,
+        "name": "",
+        "label": "# factura",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 1120,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "6351c5a762f8d966",
+        "type": "change",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].Ventas_Neto",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 920,
+        "y": 880,
+        "wires": [
+            [
+                "84db2bfd2a0078aa"
+            ]
+        ]
+    },
+    {
+        "id": "7ab124509b074c2e",
+        "type": "change",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].Ventas_Iva",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 920,
+        "y": 940,
+        "wires": [
+            [
+                "b1fa743dc1443c77"
+            ]
+        ]
+    },
+    {
+        "id": "84db2bfd2a0078aa",
+        "type": "ui_text",
+        "z": "d3a1fe4f023b936b",
+        "group": "ea9734c86c94ce87",
+        "order": 6,
+        "width": 3,
+        "height": 3,
+        "name": "",
+        "label": "Ventas netas",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 1130,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "b1fa743dc1443c77",
+        "type": "ui_text",
+        "z": "d3a1fe4f023b936b",
+        "group": "ea9734c86c94ce87",
+        "order": 9,
+        "width": 3,
+        "height": 3,
+        "name": "",
+        "label": "Iva ventas",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 1130,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "140275d3b61825b8",
+        "type": "change",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].Ventas_Total",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 920,
+        "y": 1000,
+        "wires": [
+            [
+                "e8f21424257eef89"
+            ]
+        ]
+    },
+    {
+        "id": "e8f21424257eef89",
+        "type": "ui_text",
+        "z": "d3a1fe4f023b936b",
+        "group": "ea9734c86c94ce87",
+        "order": 8,
+        "width": 3,
+        "height": 3,
+        "name": "",
+        "label": "Ventas totales",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 1140,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "49fe926a8499a1b5",
+        "type": "function",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "func": "global.set(\"idd\",msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 980,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "11805035d4df9c95",
+        "type": "ui_text_input",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "label": "ID",
+        "tooltip": "",
+        "group": "ea9734c86c94ce87",
+        "order": 1,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "",
+        "topicType": "str",
+        "x": 130,
+        "y": 980,
+        "wires": [
+            [
+                "49fe926a8499a1b5"
+            ]
+        ]
+    },
+    {
+        "id": "1eac6e460747a883",
+        "type": "change",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].Cli_Id",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 940,
+        "y": 1080,
+        "wires": [
+            [
+                "b4f26751dda6275f"
+            ]
+        ]
+    },
+    {
+        "id": "b4f26751dda6275f",
+        "type": "ui_text",
+        "z": "d3a1fe4f023b936b",
+        "group": "ea9734c86c94ce87",
+        "order": 11,
+        "width": 3,
+        "height": 3,
+        "name": "",
+        "label": "Id de cliente",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 1150,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "cace7b829518583c",
+        "type": "ui_button",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "group": "4437293f.822c38",
+        "order": 2,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "label": "Buscar",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "search",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 300,
+        "y": 160,
+        "wires": [
+            [
+                "cf82ac536fce869b"
+            ]
+        ]
+    },
+    {
+        "id": "cf82ac536fce869b",
+        "type": "function",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "func": "msg.topic=\"SELECT * FROM proveedores WHERE Prov_Id = \"+ global.get(\"vd\")\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 550,
+        "y": 160,
+        "wires": [
+            [
+                "f36f848592cb285f"
+            ]
+        ]
+    },
+    {
+        "id": "8e7c1afc96d2cd14",
+        "type": "debug",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "387de3da89607d5a",
+        "type": "function",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "func": "global.set(\"vd\",msg.payload);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 530,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c4127cebd49b8685",
+        "type": "ui_text_input",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "label": "Id Proveedores",
+        "tooltip": "",
+        "group": "4437293f.822c38",
+        "order": 1,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "",
+        "topicType": "str",
+        "x": 310,
+        "y": 320,
+        "wires": [
+            [
+                "387de3da89607d5a"
+            ]
+        ]
+    },
+    {
+        "id": "757ff2fe229f0471",
+        "type": "change",
+        "z": "d3a1fe4f023b936b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload[0].Prov_Nombre",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 970,
+        "y": 180,
+        "wires": [
+            [
+                "38335b86692b558b"
+            ]
+        ]
+    },
+    {
+        "id": "38335b86692b558b",
+        "type": "ui_text",
+        "z": "d3a1fe4f023b936b",
+        "group": "4437293f.822c38",
+        "order": 3,
+        "width": 6,
+        "height": 3,
+        "name": "",
+        "label": "Nombre proveedores",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 1210,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "f36f848592cb285f",
+        "type": "mysql",
+        "z": "d3a1fe4f023b936b",
+        "mydb": "3ca75d0c.e8d602",
+        "name": "Mysql",
+        "x": 750,
+        "y": 160,
+        "wires": [
+            [
+                "8e7c1afc96d2cd14",
+                "757ff2fe229f0471"
+            ]
+        ]
+    },
+    {
+        "id": "ea9734c86c94ce87",
+        "type": "ui_group",
+        "name": "Actividad 2",
+        "tab": "1f39576f7af145bb",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "3ca75d0c.e8d602",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "curso",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "4437293f.822c38",
+        "type": "ui_group",
+        "name": "Proveedores",
+        "tab": "1f39576f7af145bb",
+        "order": 1,
+        "disp": true,
+        "width": 6,
+        "collapse": false
+    },
+    {
+        "id": "1f39576f7af145bb",
+        "type": "ui_tab",
+        "name": "Actividades",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
