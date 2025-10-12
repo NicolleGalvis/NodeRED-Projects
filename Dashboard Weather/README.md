@@ -18,6 +18,14 @@ Este flujo de Node-RED realiza las siguientes funciones:
 
 - 🧩 **Nodos importantes utilizados:** Algunos nodos no son predeterminados en Node-RED, pero pueden descargarse desde el Manage Palette:
   - node-red-node-random
+    
+---
 
+## Vista del Dashboard
+<p align="center">
+  <img src="images/Dashboard weather.png" width="600" alt="NodosWeather">
+</p>
+
+---
 
 
