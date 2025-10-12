@@ -60,9 +60,9 @@ En la segunda vista se aprecian los **sliders** utilizados en el proceso y el **
 ---
 
 ## Aprendizaje 
-- La verdad entendi mucho sobre el uso de nodos de otro tipo gracias a este proyecto
-- uso del nodo template para uso de html en cosas más o menos complicadas para lo simple que es el nodo del dashboard
-- mejores usos en los datos y como manejarlos para las funciones.
+- me ayudo a mejorar un poco mi organización y buscar hacerlo en menos nodos, esta version que muestro es la segunda versión ya que la primera fue hecha en su momento de manera desorganizada y sin tanta experiencia, esta tiene en cuenta muchos aspectos que en la primera versión no tenia en cuenta.
+- Entendi como funcionaban mejor los mensajes para enviar a la base de datos MySQL ademas de ajustarlos para InfluxDB
+- con mas experiencia tambien se nota el cambio en los dashboards y la organización de botones y dropdown, no como la primera vez con la actividad [`conection MySQL with Node-red`](./conection%20MySQL%20with%20Node-red/)
 
 ---
 
