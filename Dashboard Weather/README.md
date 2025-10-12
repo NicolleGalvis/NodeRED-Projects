@@ -6,8 +6,8 @@ Este fue un proyecto personal que quise lograr en base a un proyecto de muestreo
 ## Descripción general
 
 Este flujo de Node-RED realiza las siguientes funciones:
-- 📡 **Entrada:** los datos fueron desde un nodo que crea datos aleatorios con el limite de datos que yo le configure, esto para hacer pruebas sin tener que acceder a la API de los datos originales.
+- 📡 **Entrada:** los datos fueron dados desde un nodo random que crea datos aleatorios con el limite de datos que yo le configure, esto para hacer pruebas sin tener que acceder a la API de los datos originales.
    
-- ⚙️ **Procesamiento:** El flujo se compone de **5 actividades principales**, cada una enfocada en una funcionalidad específica dentro de Node-RED y MySQL.
+- ⚙️ **Procesamiento:** El flujo fue bastante sencillo primero cree un boton que ayudara a hacer las veces de activador, esto lograba que los nodos randoms dieran los datos que le habia configurado parceados a 2 decimales para que fuera lo más cercano posible a los datos reales utilizados, estos se van a unos gaujes del dashboard para mostrar dichos numeros, por ultimo se unian los tres datos entregados en un array que iba directamente a un nodo funtion que lo que hace es tomar los numeros y hacer unos if else para saber en que rango se encontraba, dependiendo de esos rangos entrega un mensaje que es mandado al nodo switch donde al recibir uno de estos mensajes va directamente al template nodo y escoge la imagen relacionada a ese mensaje mientras que el nodo de texto muestra el mensaje por ejemplo si esta en un rango con temperatura alta, humedad baja y UV mediano, lo tomara como que esta soleado y mostrara un sol
 
 
