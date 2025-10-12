@@ -16,14 +16,14 @@ Este flujo de Node-RED realiza las siguientes funciones:
   tambien se creo un apartado de actualización de datos, si se quiere cambiar algun nombre o una referencia se puede hacer desde el dashboard, se usa el de actualizar información donde se escoge el robot que queramos cambiar en un dropdown que muestra el nombre y referencia del robot, se cambian usando un text imput y de ahi con el boton para actualizar dichos datos que manda a una función los nuevos datos a la base de datos mysql y los cambia 
 
 <p align="center">
-  <img src="images/Nodos Robots get in and update Data.png" width="600" alt="nodosRobots">
+  <img src="images/N.png" width="600" alt="nodosRobots">
 </p>
     
   ### 🟣 Actividad 2 – seguimiento de datos de un robot
   en esta segunda parte se escoge un robot para ingresarle datos, se usaron sliders como activadores para empezar a generar datos aleatorios, de esta manera apenas se le de al boton actualizar robot, este ira directamente al robot escogido e inyectara estos datos a la base de datos y a InfluxDB.
     
 <p align="center">
-  <img src="images/nodos for data sampling.png" width="600" alt="nodosRobots">
+  <img src="images/n.png" width="600" alt="nodosRobots">
 </p>
     
 ---
