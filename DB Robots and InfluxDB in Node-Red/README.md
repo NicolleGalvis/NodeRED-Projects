@@ -6,7 +6,7 @@ Fue el ultimo parcial hecho, se nos encargo hacer una base de datos propia con l
 ## Descripción general
 
 Este flujo de Node-RED realiza las siguientes funciones:
-- 📡 **Entrada:** los datos usados son de [`robotmovil.sql`](./robotmovil.sql) ademas de los generados o inyectados por el usuario. 
+- 📡 **Entrada:** los datos usados los generados o inyectados por el usuario. se usa la base de datos [`robotmovil.sql`](./robotmovil.sql) que se encuentra vacia al tener que nosotros mismos ingresar los robots.
 - ⚙️ **Procesamiento por Actividad:** El flujo se compone de **dos actividades principales**: una enfocada en **ingresar nuevos datos** y otra en **mostrar el seguimiento del robot escogido y sus métricas**.  
 Además, se utilizó un nuevo nodo, **InfluxDB**, para enviar los datos a la nube y poder generar **gráficas más complejas**.
   
