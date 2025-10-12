@@ -1,10 +1,10 @@
-# 🌐 Node-RED Project: Actividad MySQL y Node-RED
+# Node-RED Project: Actividad MySQL y Node-RED
 
 Este proyecto fue desarrollado en **Node-RED** como parte de una actividad académica de 5to semestre, explorando sus funciones y la capacidad de integración con bases de datos como **MySQL**. La actividad consistió en **conectar un Dashboard de Node-RED con una base de datos MySQL**, permitiendo ingresar información o consultar datos directamente desde el panel, **sin necesidad de acceder manualmente a MySQL**.
 
 ---
 
-## 🧠 Descripción general
+## Descripción general
 
 Este flujo de Node-RED realiza las siguientes funciones:
 - 📡 **Entrada:** los datos usados son de [`curso.sql`](./curso.sql). 
@@ -65,7 +65,7 @@ Este flujo de Node-RED realiza las siguientes funciones:
   
 ---
 
-## 🖼️ Vista del Dashboard
+## Vista del Dashboard
 
 <p align="center">
   <img src="images/Dashboard Mysql and NodeRED.png" width="600" alt="Dashboard Preview">
@@ -73,7 +73,7 @@ Este flujo de Node-RED realiza las siguientes funciones:
 
 ---
 
-## 🚀 Cómo usarlo
+## Cómo usarlo
 
 1️⃣ **Instala y abre XAMPP**
 - Asegúrate de que los servicios Apache y MySQL estén activos.
@@ -103,7 +103,7 @@ Este flujo de Node-RED realiza las siguientes funciones:
 
 ---
 
-## ⚙️ Tecnologías utilizadas
+## Tecnologías utilizadas
 - Node-RED   
 - JavaScript (en nodos Function)  
 - Dashboard UI  
@@ -111,7 +111,7 @@ Este flujo de Node-RED realiza las siguientes funciones:
 
 ---
 
-## 🧠 Aprendizaje y resultados
+## Aprendizaje y resultados
 
 Durante este proyecto aprendí a:
 - Iniciación en flujos eficientes y modulares en Node-RED.  
