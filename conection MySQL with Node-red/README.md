@@ -7,7 +7,7 @@ Este proyecto fue desarrollado en **Node-RED** como parte de una actividad acad�
 ## 🧠 Descripción general
 
 Este flujo de Node-RED realiza las siguientes funciones:
-- 📡 **Entrada:** los datos usados son de 'curso.sql'. 
+- 📡 **Entrada:** los datos usados son de [`curso.sql`](./curso.sql). 
 - ⚙️ **Procesamiento por Actividad:** El flujo se compone de **5 actividades principales**, cada una enfocada en una funcionalidad específica dentro de Node-RED y MySQL.
   
 ---
