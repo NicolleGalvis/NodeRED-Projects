@@ -35,5 +35,11 @@ Este flujo de Node-RED realiza las siguientes funciones:
 
 ---
 
-## Creditos
+## 📎 Créditos
+Creado por **[Nicolle Galvis](https://github.com/NicolleGalvis)** 🪄  
+
+📧 Contacto: [nicollegalvis03@gmail.com](mailto:nicollegalvis03@gmail.com) 
+
+🔗 LinkedIn: [Nicolle Galvis](https://www.linkedin.com/in/nicolle-galvis-640422270?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app) 
+
 
