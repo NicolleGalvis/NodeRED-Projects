@@ -28,4 +28,12 @@ Este flujo de Node-RED realiza las siguientes funciones:
 
 ---
 
+## Aprendizaje 
+- La verdad entendi mucho sobre el uso de nodos de otro tipo gracias a este proyecto
+- uso del nodo template para uso de html en cosas más o menos complicadas para lo simple que es el nodo del dashboard
+- mejores usos en los datos y como manejarlos para las funciones.
+
+---
+
+## Creditos
 
