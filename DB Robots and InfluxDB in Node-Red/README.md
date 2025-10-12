@@ -19,28 +19,32 @@ Este flujo de Node-RED realiza las siguientes funciones:
   <img src="images/Nodos Robots get in and update Data.png" width="600" alt="nodosRobots">
 </p>
     
-  ### 🟣 Actividad 2 – Traer datos de una fecha y ventas de cliente especifico
-  - Se usan dos Text Input: uno para el ID de venta del cliente y otro para el mes.
-  - El nodo Function está configurado para traer exclusivamente los datos del año 2018, por lo que solo filtra por mes.
-  - Al presionar el botón, se ejecuta la búsqueda en la base de datos y se obtienen todos los registros asociados al ID y mes indicados.
-  - Un nodo Change se utiliza para seleccionar los datos relevantes que serán mostrados en los nodos de texto del Dashboard.
+  ### 🟣 Actividad 2 – seguimiento de datos de un robot
+  en esta segunda parte se escoge un robot para ingresarle datos, se usaron sliders como activadores para empezar a generar datos aleatorios, de esta manera apenas se le de al boton actualizar robot, este ira directamente al robot escogido e inyectara estos datos a la base de datos y a InfluxDB.
     
 <p align="center">
-  <img src="images/actividad2.png" width="600" alt="Dashboard Preview">
+  <img src="images/nodos for data sampling.png" width="600" alt="nodosRobots">
 </p>
     
 ---
 
 - 🧩 **Nodos adicionales utilizados:** Algunos nodos no son predeterminados en Node-RED, pero pueden descargarse desde el Manage Palette:
   - node-red-node-mysql
-  - node-red-contrib-moment2
+  - node-red-contrib-stackhero-influxdb-v2
   
 ---
 
 ## Vista del Dashboard
+en el primero se puede ver el menu hamburguesa y los dos dahsboards creados el de ingresar y el de actualizar.
 
 <p align="center">
-  <img src="images/Dashboard Mysql and NodeRED.png" width="600" alt="Dashboard Preview">
+  <img src="images/dashboard Robots and InfluxDB.png" width="600" alt="Dashboard Preview">
+</p>
+
+en el segundo vemos los sliders comentados en el proceso y el dropdown que mostraria los robots ingresados a los que les queramos poner datos.
+
+<p align="center">
+  <img src="images/dashboard Robots and InfluxDB part 2.png" width="600" alt="Dashboard Preview">
 </p>
 
 ---
