@@ -7,23 +7,33 @@ Fue el ultimo parcial hecho, se nos encargo hacer una base de datos propia con l
 
 Este flujo de Node-RED realiza las siguientes funciones:
 - 📡 **Entrada:** los datos usados son de [`robotmovil.sql`](./robotmovil.sql) ademas de los generados o inyectados por el usuario. 
-- ⚙️ **Procesamiento por Actividad:** El flujo se compone de **2 actividades principales**, una enfocada en ingresar nuevos datos y otra de mostrar un seguimiento del robot escogido y sus datos tambien se uso un nuevo nod, el de influxDB para mandar los datos a la nube y poder mostrar graficas mas complicadas.
+- ⚙️ **Procesamiento por Actividad:** El flujo se compone de **dos actividades principales**: una enfocada en **ingresar nuevos datos** y otra en **mostrar el seguimiento del robot escogido y sus métricas**.  
+Además, se utilizó un nuevo nodo, **InfluxDB**, para enviar los datos a la nube y poder generar **gráficas más complejas**.
   
 ---
   ### 🟢 Actividad 1 – ingresar nuevos robots y actualizar datos de robots anteriores
-  se usan text imput para ingresar la referencia y nombre del robot que se quiera poner, se agrega con un boton que activa la consulta a la base de datos, en el nodo funtion se hace una cuenta de registros ya que se nos dio un limite de solo ingresar 4 robots que nosotros ingresaramos, asi que muestra en un nodo text cuantos van ingresados, existe un nodo aparte que se conecta a InfluxDB para ingresar en una base de datos previamente hecha en InfluxDB los robots creados e ingresados, 
+  Se utilizan **text input** para ingresar la **referencia** y **nombre** del robot que se desee registrar.  
+  Un botón activa la consulta a la base de datos, y en el **nodo function** se realiza un conteo de registros, ya que se estableció un límite de **cuatro robots** que podían ser ingresados manualmente.  
+  El resultado se muestra en un **nodo text**, indicando cuántos robots se han añadido.
   
-  tambien se creo un apartado de actualización de datos, si se quiere cambiar algun nombre o una referencia se puede hacer desde el dashboard, se usa el de actualizar información donde se escoge el robot que queramos cambiar en un dropdown que muestra el nombre y referencia del robot, se cambian usando un text imput y de ahi con el boton para actualizar dichos datos que manda a una función los nuevos datos a la base de datos mysql y los cambia 
+  Adicionalmente, un nodo conectado a **InfluxDB** envía los datos de los robots creados a una base de datos previamente configurada en la nube.
+  
+  También se creó un apartado para la **actualización de datos**.  
+Si se desea cambiar un nombre o una referencia, puede hacerse directamente desde el **dashboard**:  
+- Se selecciona el robot en un **dropdown** (que muestra nombre y referencia).  
+- Se editan los datos mediante **text input**.  
+- Al presionar el botón de actualizar, los nuevos datos se envían desde un **nodo function** hacia la base de datos **MySQL**, reemplazando los valores anteriores.
 
 <p align="center">
-  <img src="images/N.png" width="600" alt="nodosRobots">
+  <img src="images/Nodos RM get in and update Data.png" width="600" alt="nodosRobots">
 </p>
     
   ### 🟣 Actividad 2 – seguimiento de datos de un robot
-  en esta segunda parte se escoge un robot para ingresarle datos, se usaron sliders como activadores para empezar a generar datos aleatorios, de esta manera apenas se le de al boton actualizar robot, este ira directamente al robot escogido e inyectara estos datos a la base de datos y a InfluxDB.
+  En esta segunda parte se selecciona un robot para **ingresarle datos simulados**, Se emplean **sliders** como activadores para generar datos aleatorios.  
+  Al presionar el botón **“Actualizar Robots”**, estos valores se envían automáticamente al robot escogido e **inyectan los datos en la base de datos MySQL** y en **InfluxDB** simultáneamente.
     
 <p align="center">
-  <img src="images/n.png" width="600" alt="nodosRobots">
+  <img src="images/nodos for data samplingRM.png" width="600" alt="nodosRobots">
 </p>
     
 ---
@@ -35,13 +45,13 @@ Este flujo de Node-RED realiza las siguientes funciones:
 ---
 
 ## Vista del Dashboard
-en el primero se puede ver el menu hamburguesa y los dos dahsboards creados el de ingresar y el de actualizar.
+En la primera vista se puede observar el **menú hamburguesa** y los **dos dashboards creados**: uno para ingresar y otro para actualizar datos.
 
 <p align="center">
   <img src="images/dashboard Robots and InfluxDB.png" width="600" alt="Dashboard Preview">
 </p>
 
-en el segundo vemos los sliders comentados en el proceso y el dropdown que mostraria los robots ingresados a los que les queramos poner datos.
+En la segunda vista se aprecian los **sliders** utilizados en el proceso y el **dropdown** que muestra los robots ingresados, permitiendo seleccionar a cuál se desean asignar datos.
 
 <p align="center">
   <img src="images/dashboard Robots and InfluxDB part 2.png" width="600" alt="Dashboard Preview">
